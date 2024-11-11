@@ -21,6 +21,8 @@ new class extends Component
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end">
         <div class="flex my-4 h-16">
 
+            <x-nav-link href="/" >home</x-nav-link>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -37,6 +39,11 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
+
+                        <x-dropdown-link :href="route('dashboard',['for-my' => true])" wire:navigate>
+                            {{ __('My posts') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profile')" wire:navigate>
                             {{ __('Profile') }}
                         </x-dropdown-link>
