@@ -11,9 +11,21 @@ class PageController extends Controller
     {
         //muestrame todos los datos que vienen en el request
         //dd($request->all());
+        //dd($request->user()->friendsTo()->get(), $request->user()->friendsFrom()->get());
+
+
         if ($request->has('for-my')) {
+            //* existen estas dos formas de hacerlo
            // $posts = Post::where('user_id', $request->user()->id)->latest()->get();
-            $posts = $request->user()->posts()->latest()->get();
+            $user = $request->user();
+
+            //* con pluck() obtenemos solo los id de los amigos
+            $friendsTo_ids = $user->friendsTo()->pluck('users.id');
+            $friendsFrom_ids = $user->friendsFrom()->pluck('users.id');
+
+            $user_ids = $friendsTo_ids->merge($friendsFrom_ids)->push($user->id);
+
+            $posts = Post::whereIn('user_id', $user_ids)->latest()->get();
         }else{
             $posts = Post::latest()->get();
         }
